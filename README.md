@@ -1,6 +1,6 @@
 # Rewards calculator Application
 
-This application has APIs for basic CURD transaction operations, and calculate reward amount for the client.
+This application has APIs for basic CURD transaction operations, and calculate reward points for the client.
 
 # Quick start
 

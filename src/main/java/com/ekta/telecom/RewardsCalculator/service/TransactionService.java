@@ -21,7 +21,7 @@ public class TransactionService {
                 .transactions(addTransaction(transactionRQ.getTransactions())).build();
     }
 
-    public List<Transaction> addTransaction(List<Transaction> transactions) {
+    private List<Transaction> addTransaction(List<Transaction> transactions) {
         if (CollectionUtils.isEmpty(transactions)) {
             return new ArrayList<>();
         }
@@ -57,7 +57,6 @@ public class TransactionService {
         }
         List<Transaction> savedTransactions = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            // transaction.setId(transactionId);
             savedTransactions.add(transactionDAO.update(transaction));
         }
         return savedTransactions;

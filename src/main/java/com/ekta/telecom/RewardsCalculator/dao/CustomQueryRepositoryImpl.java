@@ -21,8 +21,8 @@ public class CustomQueryRepositoryImpl implements CustomQueryRepository {
         TypedQuery<TransactionDTO> query = entityManager.createQuery("SELECT t FROM  TransactionDTO t where t.clientId = :clientId and t.transactionDate > :fromDate", TransactionDTO.class);
         query.setParameter("clientId", clientId);
         query.setParameter("fromDate", fromDate);
-        List<TransactionDTO> transactionModels = query.getResultList();
-        return transactionModels.stream()
+        List<TransactionDTO> transactionDTOs = query.getResultList();
+        return transactionDTOs.stream()
                 .map(t -> new Transaction(
                         t.getId(), t.getTransactionDate(), t.getClientId(), t.getAmount(), t.getCurrency())
                 ).toList();

@@ -2,7 +2,7 @@ package com.ekta.telecom.RewardsCalculator.handler;
 
 import com.ekta.telecom.RewardsCalculator.model.TransactionRQRS;
 import com.ekta.telecom.RewardsCalculator.service.TransactionService;
-import com.ekta.telecom.RewardsCalculator.utility.RequestResponseUtility;
+import com.ekta.telecom.RewardsCalculator.utility.RequestResponseValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ public class TransactionHandler {
     private final TransactionService transactionService;
 
     public TransactionRQRS addTransactions(TransactionRQRS transactionRQ) {
-        RequestResponseUtility.validate(transactionRQ);
+        RequestResponseValidator.validate(transactionRQ);
         return transactionService.addTransactions(transactionRQ);
     }
 
@@ -26,7 +26,7 @@ public class TransactionHandler {
     }
 
     public TransactionRQRS updateTransaction(TransactionRQRS transactionRQ) {
-        RequestResponseUtility.validate(transactionRQ);
+        RequestResponseValidator.validate(transactionRQ);
         return transactionService.updateTransaction(transactionRQ);
     }
 }

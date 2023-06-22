@@ -7,10 +7,11 @@ import com.ekta.telecom.RewardsCalculator.model.TransactionRQRS;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Currency;
 
 
-public class RequestResponseUtility {
+public class RequestResponseValidator {
 
     public static void validate(TransactionRQRS transactionRQ) {
         if (CollectionUtils.isEmpty(transactionRQ.getTransactions())) {
@@ -19,14 +20,14 @@ public class RequestResponseUtility {
         transactionRQ.getTransactions().forEach(transaction -> validateClientTransaction(transaction));
     }
 
-    public static void validateClientTransaction(Transaction transaction) {
+    private static void validateClientTransaction(Transaction transaction) {
         if (transaction.getDate() == null) {
             throw new RequestValidationErrorException(ErrorMessage.CREATE_TRANSACTION_VALIDATION_ERROR, "Transaction date is missing");
         }
         if (transaction.getAmount() == null) {
             throw new RequestValidationErrorException(ErrorMessage.CREATE_TRANSACTION_VALIDATION_ERROR, "Transaction amount is missing");
         }
-        if (transaction.getAmount() < 0) {
+        if (transaction.getAmount().compareTo(BigDecimal.ZERO) < 0) {
             throw new RequestValidationErrorException(ErrorMessage.CREATE_TRANSACTION_VALIDATION_ERROR, "Invalid transaction amount");
         }
 

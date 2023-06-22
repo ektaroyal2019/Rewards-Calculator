@@ -13,6 +13,6 @@ import java.util.Map;
 @Builder
 public class RewardRS {
     private String clientId;
-    private long totalRewardAmount;
-    private Map<String, Long> monthlyRewardAmount;
+    private long totalRewardPoints;
+    private Map<String, Long> monthlyRewardPoints;
 }

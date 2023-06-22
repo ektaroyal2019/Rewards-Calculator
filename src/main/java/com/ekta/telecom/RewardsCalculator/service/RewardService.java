@@ -7,6 +7,7 @@ import com.ekta.telecom.RewardsCalculator.model.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
@@ -29,12 +30,13 @@ public class RewardService {
         }
         for (Transaction transaction : transactions) {
             long rewardPoints = 0L;
-            Double transactionAmount = transaction.getAmount();
-            if (transactionAmount > THRESHOLD_LEVEL_SECOND) {
-                long valueAboveThreshold = (long) (transactionAmount - THRESHOLD_LEVEL_SECOND);
+            long valueAboveThreshold;
+            BigDecimal transactionAmount = transaction.getAmount();
+            if (transactionAmount.compareTo(BigDecimal.valueOf(THRESHOLD_LEVEL_SECOND)) > 0) {
+                valueAboveThreshold = transactionAmount.subtract(BigDecimal.valueOf(THRESHOLD_LEVEL_SECOND)).longValue();
                 rewardPoints += SECOND_THRESHOLD_LEVEL_POINTS_MULTIPLIER * valueAboveThreshold + FIRST_THRESHOLD_LEVEL * FIRST_THRESHOLD_LEVEL_POINTS_MULTIPLIER;
-            } else if (transactionAmount > FIRST_THRESHOLD_LEVEL) {
-                long valueAboveThreshold = (long) (transactionAmount - FIRST_THRESHOLD_LEVEL);
+            } else if (transactionAmount.compareTo(BigDecimal.valueOf(FIRST_THRESHOLD_LEVEL)) > 0) {
+                valueAboveThreshold = transactionAmount.subtract(BigDecimal.valueOf(FIRST_THRESHOLD_LEVEL)).longValue();
                 rewardPoints += FIRST_THRESHOLD_LEVEL_POINTS_MULTIPLIER * valueAboveThreshold;
             }
             rewardList.add(new Reward(rewardPoints, transaction.getId()));
@@ -51,8 +53,8 @@ public class RewardService {
         long totalValue = monthlyRewards.values().stream().flatMap(Collection::stream).mapToLong(Reward::getValue).sum();
         return RewardRS.builder()
                 .clientId(clientId)
-                .totalRewardAmount(totalValue)
-                .monthlyRewardAmount(monthlyRewards.entrySet().stream().collect(
+                .totalRewardPoints(totalValue)
+                .monthlyRewardPoints(monthlyRewards.entrySet().stream().collect(
                         Collectors.toMap(Map.Entry::getKey, v -> v.getValue().stream().mapToLong(Reward::getValue).sum())))
                 .build();
 

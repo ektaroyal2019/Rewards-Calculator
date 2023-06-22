@@ -27,11 +27,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     @Override
     public Transaction update(Transaction transaction) {
-        TransactionDTO model = repository.findById(transaction.getId()).orElseThrow(() -> new TransactionNotFoundException(ErrorMessage.TRANSACTION_NOT_FOUND));
-        model.setTransactionDate(transaction.getDate());
-        model.setCurrency(transaction.getCurrency());
-        model.setAmount(transaction.getAmount());
-        return mapTransaction(repository.save(model));
+        TransactionDTO transactionDTO = repository.findById(transaction.getId()).orElseThrow(() -> new TransactionNotFoundException(ErrorMessage.TRANSACTION_NOT_FOUND));
+        transactionDTO.setTransactionDate(transaction.getDate());
+        transactionDTO.setCurrency(transaction.getCurrency());
+        transactionDTO.setAmount(transaction.getAmount());
+        return mapTransaction(repository.save(transactionDTO));
     }
 
     @Override
